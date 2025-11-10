@@ -1,6 +1,6 @@
 // Content Script for Smart Scraper v2
 
-console.log('Smart Scraper v2 content script loaded')
+// console.log('Smart Scraper v2 content script loaded')
 
 // Capture page HTML and store it
 function capturePageHTML() {
@@ -15,7 +15,7 @@ function capturePageHTML() {
 
   // Store in chrome storage (Chrome has a 10MB limit per item)
   chrome.storage.local.set({ currentPageHTML: pageData }, () => {
-    console.log('Page HTML captured and stored:', pageData.title, 'Size:', pageData.htmlSize, 'bytes')
+    // console.log('Page HTML captured and stored:', pageData.title, 'Size:', pageData.htmlSize, 'bytes')
   })
 
   return pageData
@@ -26,7 +26,7 @@ window.addEventListener('load', () => {
   setTimeout(() => {
     capturePageHTML()
     chrome.runtime.sendMessage({ type: 'PAGE_LOADED', url: window.location.href }).catch(err => {
-      console.log('Background not ready yet')
+      // console.log('Background not ready yet')
     })
   }, 500)
 })
@@ -45,7 +45,7 @@ let isSelectionMode = false
 let highlightOverlay: HTMLElement | null = null
 
 function startSelectionMode() {
-  console.log('[SELECTION MODE] Started')
+  // console.log('[SELECTION MODE] Started')
   isSelectionMode = true
 
   // Create overlay containers for hierarchy
@@ -162,7 +162,7 @@ function startSelectionMode() {
 }
 
 function cancelSelectionMode() {
-  console.log('[SELECTION MODE] Cancelled')
+  // console.log('[SELECTION MODE] Cancelled')
   isSelectionMode = false
 
   // Remove overlay container
@@ -183,7 +183,7 @@ function cancelSelectionMode() {
   const selectionBorder = document.getElementById('smart-scraper-selection-border')
   if (selectionBorder) {
     selectionBorder.remove()
-    console.log('[SELECTION] Green border removed')
+    // console.log('[SELECTION] Green border removed')
   }
 
   const listeners = (window as any).smartScraperListeners
@@ -195,7 +195,7 @@ function cancelSelectionMode() {
 }
 
 function selectElement(element: Element) {
-  console.log('[SELECTION MODE] Element selected:', element.tagName, element)
+  // console.log('[SELECTION MODE] Element selected:', element.tagName, element)
 
   // Remove any previous selection border
   const previousBorder = document.getElementById('smart-scraper-selection-border')
@@ -219,8 +219,8 @@ function selectElement(element: Element) {
   const fullOuterHTML = element.outerHTML
   const outerHTML_snippet = fullOuterHTML.length > 50000 ? fullOuterHTML.substring(0, 50000) + '...' : fullOuterHTML
 
-  console.log('[SELECTION] Full HTML size:', fullOuterHTML.length, 'bytes')
-  console.log('[SELECTION] Element has', element.children.length, 'direct children')
+  // console.log('[SELECTION] Full HTML size:', fullOuterHTML.length, 'bytes')
+  // console.log('[SELECTION] Element has', element.children.length, 'direct children')
 
   const payload = {
     tagName: element.tagName.toLowerCase(),
@@ -261,14 +261,14 @@ function selectElement(element: Element) {
 
   // Create persistent selection border AFTER cleanup
   setTimeout(() => {
-    console.log('[SELECTION] Creating border, element:', element, 'visible:', element.offsetParent !== null)
+    // console.log('[SELECTION] Creating border, element:', element, 'visible:', element.offsetParent !== null)
 
     const rect = element.getBoundingClientRect()
     const scrollLeft = window.scrollX || document.documentElement.scrollLeft
     const scrollTop = window.scrollY || document.documentElement.scrollTop
 
-    console.log('[SELECTION] Element rect:', { left: rect.left, top: rect.top, width: rect.width, height: rect.height })
-    console.log('[SELECTION] Scroll offset:', { scrollLeft, scrollTop })
+    // console.log('[SELECTION] Element rect:', { left: rect.left, top: rect.top, width: rect.width, height: rect.height })
+    // console.log('[SELECTION] Scroll offset:', { scrollLeft, scrollTop })
 
     const selectionBorder = document.createElement('div')
     selectionBorder.id = 'smart-scraper-selection-border'
@@ -285,17 +285,17 @@ function selectElement(element: Element) {
     selectionBorder.style.zIndex = '2147483647' // Max z-index
     selectionBorder.style.boxShadow = '0 0 10px rgba(40, 167, 69, 0.8)'
 
-    console.log('[SELECTION] Border styles set, appending to document.documentElement')
+    // console.log('[SELECTION] Border styles set, appending to document.documentElement')
     document.documentElement.appendChild(selectionBorder)
 
     const checkBorder = document.getElementById('smart-scraper-selection-border')
-    console.log('[SELECTION] Border in DOM after append:', checkBorder !== null, checkBorder)
-    console.log('[SELECTION] Border computed style:', window.getComputedStyle(selectionBorder).position, window.getComputedStyle(selectionBorder).zIndex)
+    // console.log('[SELECTION] Border in DOM after append:', checkBorder !== null, checkBorder)
+    // console.log('[SELECTION] Border computed style:', window.getComputedStyle(selectionBorder).position, window.getComputedStyle(selectionBorder).zIndex)
   }, 50)
 
   // Send to background script
   chrome.runtime.sendMessage({ type: 'ELEMENT_SELECTED', payload }, response => {
-    console.log('[SELECTION MODE] Element payload sent to background')
+    // console.log('[SELECTION MODE] Element payload sent to background')
   })
 }
 
@@ -343,7 +343,7 @@ function generateCSSSelector(element: Element): string {
 
 // Listen for messages from sidebar/background
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  console.log('Content script message:', request)
+  // console.log('Content script message:', request)
 
   if (request.type === 'GET_PAGE_HTML') {
     const pageData = {

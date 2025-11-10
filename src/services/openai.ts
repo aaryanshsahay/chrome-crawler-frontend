@@ -27,7 +27,7 @@ export async function askOpenAI(question: string, pageHTML?: string): Promise<st
     return data.data
 
   } catch (error) {
-    console.error('Backend API Error:', error)
+    // console.error('Backend API Error:', error)
     throw error
   }
 }

@@ -4,7 +4,7 @@ const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY
 
 if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-  console.warn('Supabase credentials not found in environment variables')
+  // console.warn('Supabase credentials not found in environment variables')
 }
 
 export const supabase = createClient(SUPABASE_URL || '', SUPABASE_ANON_KEY || '')
@@ -25,7 +25,7 @@ export async function signInWithEmail(email: string) {
       message: 'Check your email for the one-time code. If you don\'t see it, check your spam folder.'
     }
   } catch (error) {
-    console.error('Sign in error:', error)
+    // console.error('Sign in error:', error)
     throw error
   }
 }
@@ -41,7 +41,7 @@ export async function verifyOtp(email: string, token: string) {
     if (error) throw error
     return { success: true, data }
   } catch (error) {
-    console.error('OTP verification error:', error)
+    // console.error('OTP verification error:', error)
     throw error
   }
 }
@@ -52,7 +52,7 @@ export async function signOut() {
     if (error) throw error
     return { success: true }
   } catch (error) {
-    console.error('Sign out error:', error)
+    // console.error('Sign out error:', error)
     throw error
   }
 }
@@ -63,7 +63,7 @@ export async function getCurrentUser() {
     if (error) throw error
     return session?.user || null
   } catch (error) {
-    console.error('Get current user error:', error)
+    // console.error('Get current user error:', error)
     return null
   }
 }
@@ -88,7 +88,7 @@ export async function saveSearchMetrics(metrics: {
 
     const userId = session?.user?.id
     if (!userId) {
-      console.warn('No user ID available for saving metrics')
+      // console.warn('No user ID available for saving metrics')
       return { success: false, error: 'User not authenticated' }
     }
 
@@ -117,7 +117,7 @@ export async function saveSearchMetrics(metrics: {
     return { success: true, data: data.data }
 
   } catch (error) {
-    console.error('Save metrics error:', error)
+    // console.error('Save metrics error:', error)
     throw error
   }
 }
@@ -129,7 +129,7 @@ export async function getCredits() {
 
     const userId = session?.user?.id
     if (!userId) {
-      console.warn('No user ID available for fetching credits')
+      // console.warn('No user ID available for fetching credits')
       return null
     }
 
@@ -143,7 +143,7 @@ export async function getCredits() {
     })
 
     if (!response.ok) {
-      console.error('Failed to fetch credits')
+      // console.error('Failed to fetch credits')
       return null
     }
 
@@ -151,7 +151,7 @@ export async function getCredits() {
     return data.data || null
 
   } catch (error) {
-    console.error('Get credits error:', error)
+    // console.error('Get credits error:', error)
     return null
   }
 }
@@ -163,7 +163,7 @@ export async function decrementCredits() {
 
     const userId = session?.user?.id
     if (!userId) {
-      console.warn('No user ID available for updating credits')
+      // console.warn('No user ID available for updating credits')
       return null
     }
 
@@ -177,7 +177,7 @@ export async function decrementCredits() {
     })
 
     if (!response.ok) {
-      console.error('Failed to decrement credits')
+      // console.error('Failed to decrement credits')
       return null
     }
 
@@ -185,7 +185,7 @@ export async function decrementCredits() {
     return data.data ? [data.data] : null
 
   } catch (error) {
-    console.error('Decrement credits error:', error)
+    // console.error('Decrement credits error:', error)
     return null
   }
 }

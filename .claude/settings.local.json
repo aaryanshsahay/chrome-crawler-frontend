@@ -3,7 +3,11 @@
     "allow": [
       "WebSearch",
       "WebFetch(domain:vite.dev)",
-      "WebFetch(domain:crxjs.dev)"
+      "WebFetch(domain:crxjs.dev)",
+      "Read(//Users/aaryanshsahay/Documents/GitHub/chrome-crawler-backend/**)",
+      "Bash(git add utils/auth.py app.py)",
+      "Bash(git commit -m \"Fix utils/auth.py and add asyncio import - lazy load Supabase client\n\n- Move Supabase client initialization from module import to function call\n- Create get_supabase_client() helper for lazy loading\n- Update verify_supabase_token decorator to use lazy-loaded client\n- Add asyncio import for future async support\n- Fixes ''supabase_key is required'' error on Render deployment\")",
+      "Bash(git push origin main)"
     ],
     "deny": [],
     "ask": []
