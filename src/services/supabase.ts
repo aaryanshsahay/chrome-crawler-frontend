@@ -92,7 +92,7 @@ export async function saveSearchMetrics(metrics: {
       return { success: false, error: 'User not authenticated' }
     }
 
-    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'
+    const BACKEND_URL = 'https://chrome-crawler-backend.onrender.com'
 
     const response = await fetch(`${BACKEND_URL}/api/metrics/save`, {
       method: 'POST',
@@ -133,7 +133,7 @@ export async function getCredits() {
       return null
     }
 
-    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'
+    const BACKEND_URL = 'https://chrome-crawler-backend.onrender.com'
 
     const response = await fetch(`${BACKEND_URL}/api/credits/get/${userId}`, {
       method: 'GET',
@@ -167,7 +167,7 @@ export async function decrementCredits() {
       return null
     }
 
-    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'
+    const BACKEND_URL = 'https://chrome-crawler-backend.onrender.com'
 
     const response = await fetch(`${BACKEND_URL}/api/credits/decrement/${userId}`, {
       method: 'POST',

@@ -1,5 +1,5 @@
 export async function askOpenAI(question: string, pageHTML?: string): Promise<string> {
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'
+  const BACKEND_URL = 'https://chrome-crawler-backend.onrender.com'
 
   try {
     const response = await fetch(`${BACKEND_URL}/api/openai/ask`, {
