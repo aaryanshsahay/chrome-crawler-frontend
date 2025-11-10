@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Chrome Crawler",
+  "version": "0.0.1",
+  "description": "Intelligently extract and analyze web content",
+  "permissions": ["scripting", "activeTab", "tabs", "sidePanel", "storage"],
+  "side_panel": {
+    "default_path": "src/pages/sidebar.html"
+  },
+  "action": {
+    "default_title": "Chrome Crawler"
+  },
+  "background": {
+    "service_worker": "src/background/index.ts"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/content/index.ts"],
+      "all_frames": false
+    }
+  ]
+}

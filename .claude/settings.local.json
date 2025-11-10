@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:vite.dev)",
+      "WebFetch(domain:crxjs.dev)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
