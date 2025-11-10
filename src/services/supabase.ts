@@ -92,21 +92,30 @@ export async function saveSearchMetrics(metrics: {
       return { success: false, error: 'User not authenticated' }
     }
 
-    const { data, error } = await supabase
-      .from('results')
-      .insert([
-        {
-          user_id: userId,
-          user_input: metrics.user_input,
-          domain: metrics.domain,
-          selected_element: metrics.selected_element,
-          output: metrics.output,
-        }
-      ])
-      .select()
+    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'
 
-    if (error) throw error
-    return { success: true, data }
+    const response = await fetch(`${BACKEND_URL}/api/metrics/save`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        user_id: userId,
+        user_input: metrics.user_input,
+        domain: metrics.domain,
+        selected_element: metrics.selected_element,
+        output: metrics.output
+      })
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json()
+      throw new Error(errorData.error || 'Failed to save metrics')
+    }
+
+    const data = await response.json()
+    return { success: true, data: data.data }
+
   } catch (error) {
     console.error('Save metrics error:', error)
     throw error
@@ -124,14 +133,23 @@ export async function getCredits() {
       return null
     }
 
-    const { data, error } = await supabase
-      .from('credits')
-      .select('credits_used, credits_remaining')
-      .eq('user_id', userId)
-      .single()
+    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'
 
-    if (error) throw error
-    return data
+    const response = await fetch(`${BACKEND_URL}/api/credits/get/${userId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+
+    if (!response.ok) {
+      console.error('Failed to fetch credits')
+      return null
+    }
+
+    const data = await response.json()
+    return data.data || null
+
   } catch (error) {
     console.error('Get credits error:', error)
     return null
@@ -149,28 +167,23 @@ export async function decrementCredits() {
       return null
     }
 
-    // Get current credits_used
-    const { data: currentCredits, error: getError } = await supabase
-      .from('credits')
-      .select('credits_used, credits_remaining')
-      .eq('user_id', userId)
-      .single()
+    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'
 
-    if (getError) throw getError
+    const response = await fetch(`${BACKEND_URL}/api/credits/decrement/${userId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
 
-    const newUsed = (currentCredits.credits_used || 0) + 1
+    if (!response.ok) {
+      console.error('Failed to decrement credits')
+      return null
+    }
 
-    // Update only credits_used
-    const { data, error } = await supabase
-      .from('credits')
-      .update({
-        credits_used: newUsed
-      })
-      .eq('user_id', userId)
-      .select()
+    const data = await response.json()
+    return data.data ? [data.data] : null
 
-    if (error) throw error
-    return data
   } catch (error) {
     console.error('Decrement credits error:', error)
     return null
